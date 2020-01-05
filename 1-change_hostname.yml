@@ -1,0 +1,19 @@
+- 
+  name: change hostnamee
+  hosts: [remote]
+  become: true
+  vars: 
+    ansible_python_interpreter: /usr/bin/python3
+  
+  tasks:
+  
+    - name: change hostname to myserver
+      hostname:
+        name: '{{ansible_host.split(".")[0]}}'
+
+    - name: add myself to /etc/hosts
+      replace:
+        dest: /etc/hosts
+        regexp: '^127\.0\.0\.1[ \t]+virtual-VirtualBox'
+        replace: "127.0.0.1 {{ansible_host.split('.')[0]}}"
+        
